@@ -1,0 +1,11 @@
+{
+  "name": "mentoons-admin-backend",
+  "version": "1.0.0",
+  "description": "mentoons admin backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mentoons",
+  "license": "ISC"
+}
