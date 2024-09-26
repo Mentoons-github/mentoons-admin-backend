@@ -12,3 +12,5 @@ dbConnect()
     });
   })
   .catch((err) => console.log(err));
+
+console.log("akash");
