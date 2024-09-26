@@ -10,10 +10,7 @@ app.use(cookieParser());
 
 // api routes
 app.get("/api/v1", (req, res) => {
-  return res
-    .cookie("aman", "aman is a good boy")
-    .clearCookie("akash")
-    .json({ message: "success" });
+  return res.json({ message: "success" });
 });
 
 // catching invalid routes
@@ -22,6 +19,8 @@ app.get("*", (req, res, next) => {
   return res.status(404).json({ message: `${url} is not a valid endpoint` });
 });
 
-//
+// catching errors
+
+app.use();
 
 module.exports = { app };
