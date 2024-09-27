@@ -32,6 +32,16 @@ module.exports = {
 
     return createdUser;
   },
-
-  loginUser: async(),
+  loginUser: async (data) => {
+    const { email, password } = data;
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      throw customError(404, "User does not exist");
+    }
+    const isPasswordCorrect = await existingUser.isPasswordCorrect(password);
+    const user = await User.findById(existingUser._id).select(
+      "-password -refreshToken"
+    );
+    return user;
+  },
 };
