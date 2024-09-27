@@ -32,4 +32,6 @@ module.exports = {
 
     return createdUser;
   },
+
+  loginUser: async(),
 };

@@ -19,6 +19,6 @@ module.exports = {
     }
 
     const user = await userHelper.registerUser(req.body);
-    console.log(user);
+    return successResponse(res, 201, "User registered successfully!", user);
   }),
 };
