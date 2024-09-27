@@ -9,9 +9,10 @@ const userRoutes = require("./routes/user.routes.js");
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.json());
 
 // api routes
-app.use("/api/v1", userRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // catching invalid routes
 app.get("*", (req, res, next) => {
@@ -20,7 +21,6 @@ app.get("*", (req, res, next) => {
 });
 
 // centralized error function
-
 app.use(errorHandler);
 
 module.exports = { app };

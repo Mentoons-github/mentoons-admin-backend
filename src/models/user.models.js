@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -53,10 +55,50 @@ const userSchema = new mongoose.Schema({
     default:
       "https://imgs.search.brave.com/cUa5rWZ_Q7oY7mCXVF1VRZdDbtiWpBiesUzEgph41PI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA4LzAzLzMxLzQ1/LzM2MF9GXzgwMzMx/NDU5M19FNm01eHJW/Zmtlc1FWUnh1Vjhp/WnBldHdLZ05vZUZj/by5qcGc",
   },
-  isAdmin: {
+  role: {
     type: String,
-    default: false,
+    enum: ["ADMIN", "EMPLOYEE"],
+    default: "EMPLOYEE",
+  },
+  refreshToken: {
+    type: String,
   },
 });
 
+// middleware for pre hashing password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = bcrypt.hash(this.password, 10);
+  next();
+});
+
+// middleware to check password
+userSchema.methods.isPasswordCorrect = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+// middleware to generate access token
+userSchema.methods.generateAccessToken = async function () {
+  return jwt.sign(
+    {
+      _id,
+      name,
+      email,
+      password,
+      picture,
+      roles,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "1d" }
+  );
+};
+
+// middleware to generate refresh token
+userSchema.methods.generateRefreshToken = async function () {
+  return jwt.sign({ _id }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "7d",
+  });
+};
+
 const User = mongoose.model("User", userSchema);
+module.exports = User;

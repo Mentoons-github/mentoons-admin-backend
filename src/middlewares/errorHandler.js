@@ -2,7 +2,7 @@ const messageHelper = require("../utils/messageHelper.utils");
 const { errorResponse } = require("../utils/responseHelper.utils");
 
 module.exports = {
-  createError: (statusCode, message) => {
+  customError: (statusCode, message) => {
     const error = new Error(message);
     error.statusCode = statusCode;
     return error;
