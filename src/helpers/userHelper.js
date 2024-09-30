@@ -39,9 +39,30 @@ module.exports = {
       throw customError(404, "User does not exist");
     }
     const isPasswordCorrect = await existingUser.isPasswordCorrect(password);
-    const user = await User.findById(existingUser._id).select(
-      "-password -refreshToken"
-    );
-    return user;
+
+    if (!isPasswordCorrect) {
+      throw customError(401, "Invalid Password");
+    }
+
+    const { password: pass, refreshToken, ...rest } = existingUser?._doc;
+
+    return rest;
+  },
+  // generate access and refresh token
+  generateAccessAndRefreshToken: async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw customError(404, "User doesn't exists");
+      }
+      const accessToken = await user.generateAccessToken();
+      const refreshToken = await user.generateRefreshToken();
+
+      user.refreshToken = refreshToken;
+      await user.save({ validateBeforeSave: false });
+      return { accessToken, refreshToken };
+    } catch (error) {
+      throw customError(500, error.message);
+    }
   },
 };
