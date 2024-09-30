@@ -1,5 +1,8 @@
 const userHelper = require("../helpers/userHelper");
-const { errorHandler, customError } = require("../middlewares/errorHandler");
+const {
+  errorHandler,
+  customError,
+} = require("../middlewares/error.middleware");
 const { asyncHandler } = require("../utils/asyncHandler.utils");
 const messageHelper = require("../utils/messageHelper.utils");
 const { successResponse } = require("../utils/responseHelper.utils");

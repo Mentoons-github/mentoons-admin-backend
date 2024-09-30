@@ -1,4 +1,4 @@
-const { customError } = require("../middlewares/errorHandler");
+const { customError } = require("../middlewares/error.middleware.js");
 const User = require("../models/user.models");
 
 module.exports = {

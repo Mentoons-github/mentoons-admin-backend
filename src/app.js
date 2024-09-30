@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { errorHandler } = require("./middlewares/errorHandler");
+const { errorHandler } = require("./middlewares/error.middleware.js");
 const userRoutes = require("./routes/user.routes.js");
 
 // initial configurations
