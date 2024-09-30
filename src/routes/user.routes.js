@@ -13,5 +13,8 @@ const router = express.Router();
 router.post("/sign-in", registerController);
 router.post("/login", loginController);
 router.get("/create-admin", verifyJWT, makeAdmin);
+router.get("/private-content", verifyJWT, isAdmin, (req, res, next) => {
+  return successResponse(res, 200, "Private Content");
+});
 
 module.exports = router;
